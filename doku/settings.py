@@ -154,7 +154,7 @@ CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',  # local React server
     'https://dokumental-fyp.netlify.app',
-    '0.0.0.0'
+    'http://0.0.0.0'
 )
 
 django_heroku.settings(locals())
