@@ -8,9 +8,8 @@ from tensorflow import keras
 from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
-from model.data_manager import DataManager
 
-
+from config import dm, model
 
 def run_model(arr_of_texts):
 	"""
@@ -19,18 +18,8 @@ def run_model(arr_of_texts):
 	"""
 	# Getting the path information of current directory
 	path = os.path.abspath(__file__)
-	dir_path = os.path.dirname(path) 
-
-	# Loading the data manager
-	print("Loading data manager...")
-	dm_path = os.path.join(dir_path, "actual/datamanager.pkl")
-	with open(dm_path, 'rb') as pickle_file:
-		dm = pickle.load(pickle_file)
-
-	# Loading the trained model
-	print("Loading model...")
-	model_path = os.path.join(dir_path, "actual/epoch_03-val_acc_0.87")
-	model = tf.keras.models.load_model(model_path)
+	dir_path = os.path.dirname(path)
+	tf.get_logger().setLevel('INFO')
 
 	# Perform prediction
 	print("Getting prediction results..")
@@ -39,9 +28,20 @@ def run_model(arr_of_texts):
 
 	# Get maximum result
 	amax = np.argmax(result, 1)
+	predicted_classes = dm.labels[amax]
 
-	temp  = dm.labels[amax]
-	predicted_classes = [pred_class[2:] for pred_class in temp]
-	
-	return predicted_classes
+	final_result = []
+	for i in range(len(arr_of_texts)):
+		percentages = [round(r * 100, 2) for r in result[i]]
+		pred_class = predicted_classes[i][2:]
+		final_result.append((pred_class, percentages))
 
+	return final_result
+
+
+if __name__ == '__main__':
+	sample_file = open("middle1.txt", "r")
+	text = sample_file.read()
+	arr = [text]
+	res = run_model(arr)
+	print(f'Results = {res}')
