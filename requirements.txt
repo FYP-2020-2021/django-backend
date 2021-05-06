@@ -18,7 +18,11 @@ cycler==0.10.0
 decorator==4.4.2
 defusedxml==0.6.0
 distlib==0.3.1
+dj-database-url==0.5.0
 Django==3.1.7
+django-cors-headers==3.7.0
+django-heroku==0.3.1
+djangorestframework==3.12.4
 docx2txt==0.8
 EbookLib==0.17.1
 entrypoints==0.3
@@ -79,6 +83,7 @@ Pillow==8.2.0
 prometheus-client==0.7.1
 prompt-toolkit==3.0.5
 protobuf==3.13.0
+psycopg2==2.8.6
 ptyprocess==0.6.0
 py4j==0.10.9
 pyasn1==0.4.8
@@ -131,6 +136,7 @@ virtualenv==20.0.30
 wcwidth==0.1.9
 webencodings==0.5.1
 Werkzeug==1.0.1
+whitenoise==5.2.0
 widgetsnbextension==3.5.1
 wrapt==1.12.1
 xlrd==1.2.0

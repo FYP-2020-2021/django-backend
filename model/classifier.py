@@ -11,7 +11,7 @@ def run_model(arr_of_texts):
 	print("Number of input texts:", len(arr_of_texts))
 
 	# Perform prediction
-	dm_path = os.path.join(dir_path, "model/actual/tokenizer.pkl")
+	dm_path = os.path.join(dir_path, "actual/tokenizer.pkl")
 	print("dm_path =", dm_path)
 	arr_of_texts = dm.predict_preprocess(arr_of_texts, dm_path)
 	print("Shape of input tensor:", arr_of_texts.shape)
