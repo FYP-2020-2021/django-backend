@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    # 'django.contrib.staticfiles',
     'uploads.apps.UploadsConfig',
     'rest_framework',
     'corsheaders', # new
@@ -134,10 +134,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_URL = '/static/'
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 # new
 REST_FRAMEWORK = {
@@ -152,9 +152,9 @@ REST_FRAMEWORK = {
 # CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
+    'http://0.0.0.0',
     'http://localhost:3000',  # local React server
-    'https://dokumental-fyp.netlify.app',
-    'http://0.0.0.0'
+    'https://dokumental-fyp.netlify.app', # netlify front end
 )
 
 django_heroku.settings(locals())

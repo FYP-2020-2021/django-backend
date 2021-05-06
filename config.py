@@ -1,19 +1,32 @@
+"""
+THIS FILE PERFORMS SETUP ON INITIALIZING THE MODEL UPON START UP
+"""
+
 import os
-import pickle
 import tensorflow as tf
 from tensorflow import keras
+from data_manager import DataManager
+import numpy as np
 
-path = os.path.abspath(__file__)
-dir_path = os.path.dirname(path)
+
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
+dir_path = os.path.abspath('.')
+dm_path = dir_path + "/tmp"
+model_path = dir_path + "/model/actual/epoch_03-val_acc_0.87"
 
 # Loading the data manager
-print("Loading data manager...")
-dm_path = os.path.join(dir_path, "model/actual/datamanager.pkl")
-with open(dm_path, 'rb') as pickle_file:
-	dm = pickle.load(pickle_file)
+print("From StartupConfig: Loading data manager...")
+dm = DataManager(dm_path, encoding="latin")
+dm.labels = np.asarray(["Elementary School", "Middle School", "High School", "Undergraduate"])
 
 # Loading the trained model
-print("Loading model...")
-model_path = os.path.join(dir_path, "model/actual/epoch_03-val_acc_0.87")
+print("From StartupConfig: Loading model...")
 model = tf.keras.models.load_model(model_path)
 
+
+
+
+
+# path = os.path.abspath(__file__)
+# dir_path = os.path.dirname(path)

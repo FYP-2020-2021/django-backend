@@ -16,7 +16,7 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 class DataManager():
     def __init__(self, path, train_ratio=0.8, verbose=False, vocab_size=5000, encoding='utf8'):
-        nltk.download('punkt')
+        # nltk.download('punkt')
         if len(path) <= 0:
             raise AttributeError('Invalid dataset path.')
         self.path = path
@@ -120,19 +120,21 @@ class DataManager():
         # self.train_set = Dataset.from_tensor_slices((train_tokens, train_classes))
         # self.val_set = Dataset.from_tensor_slices((valid_tokens, valid_classes))
 
-    def predict_preprocess(self, input_texts):
+    def predict_preprocess(self, input_texts, tf_tokenizer_path):
         tokenizer = nltk.data.load('tokenizers/punkt/english.pickle')
         texts = []
         sentences = []
         for text in input_texts:
             texts.append(text)
             text = tokenizer.tokenize(text)
-            sentences.append(text)
+            sentences.append(text[:100])
         # with open(tf_tokenizer_path, 'rb') as pkl_read:
         #     self.tokenizer = pickle.load(pkl_read)
         tokens = [self.tokenizer.texts_to_sequences(sentences[i]) for i in range(len(sentences))]
-        max_array = [list(map(lambda sentence: len(sentence), text)) for text in tokens]
-        maxlen = max(max(max_array))
+        # max_array = [list(map(lambda sentence: len(sentence), text)) for text in tokens]
+        # maxlen = max(max(max_array))
+        self.maxlen = 30
+        self.max_sentence_number = 100
         tokens = [pad_sequences(tokens[i], padding='post', truncating='post', value=0, maxlen=self.maxlen) for i in range(len(tokens))]
         for i in range(len(tokens)):
             if tokens[i].shape[0] < self.max_sentence_number:
@@ -148,11 +150,3 @@ def sys_args():
     parser.add_argument('-v', '--verbose', default=False, action='store_true', help='Whether or not to turn on the verbose when loading dataset. (Default = False)')
     return parser.parse_args()
 
-
-if __name__ == '__main__':
-    args = sys_args()
-    print('Loading ....')
-    dm = DataManager(args.path, args.train_ratio, args.verbose)
-    # print(dm.word2idx)
-    # print(dm.train_set)
-    # print(dm.val_set)
