@@ -13,6 +13,8 @@ from rest_framework.response import Response
 import textract
 from model.classifier import run_model
 
+from timeit import default_timer as timer
+
 
 def extract_texts(files):
 	"""
@@ -45,23 +47,34 @@ def upload_files(request):
 			# Wrong file indication
 			if len(files) == 0:
 				return HttpResponse("Please indicate upload file field as 'file'", status=400)
-			
+			start_time = timer()
 			# Extract the text from the files
 			arr_of_texts = extract_texts(files)
 			
 			# Run the model to get the result, in the format of a list of tuple (level, percentages)
 			results = run_model(arr_of_texts)
 			print(f'Result = {results}')
+			end_time = timer()
 
+			print(f'Total time to process = {round(end_time - start_time, 4)}')
 			# Parse into return JSON format
 			upload_results = []
 			for i in range(len(results)):
-				temp_res = {
-					"name": files[i].name,
-					"level": results[i][0],
-					"percentages": results[i][1]
-				}
-				upload_results.append(temp_res)
+				if len(arr_of_texts[i]) > 0:
+					temp_res = {
+						"name": files[i].name,
+						"level": results[i][0],
+						"percentages": results[i][1]
+					}
+					upload_results.append(temp_res)
+				else:
+					temp_res = {
+						"name": files[i].name,
+						"level": "Fail",
+						"description": "File is empty"
+					}
+					upload_results.append(temp_res)
+				
 
 			return JsonResponse(upload_results, safe=False)
 
